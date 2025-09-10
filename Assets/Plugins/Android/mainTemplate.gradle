@@ -3,8 +3,24 @@ apply plugin: 'com.android.library'
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'com.google.android.gms:play-services-auth:16+'
+// Android Resolver Dependencies Start
+    implementation 'com.google.android.gms:play-services-auth-base:16+' // Google.XR.ARCoreExtensions.Editor.Internal.ExternalDependencyResolverHelper.RegisterAndroidDependencies
+    implementation 'com.google.android.gms:play-services-location:17+' // Google.XR.ARCoreExtensions.Editor.Internal.ExternalDependencyResolverHelper.RegisterAndroidDependencies
+// Android Resolver Dependencies End
 **DEPS**}
 
+// Android Resolver Exclusions Start
+android {
+  packagingOptions {
+      exclude ('/lib/armeabi/*' + '*')
+      exclude ('/lib/mips/*' + '*')
+      exclude ('/lib/mips64/*' + '*')
+      exclude ('/lib/x86/*' + '*')
+      exclude ('/lib/x86_64/*' + '*')
+  }
+}
+// Android Resolver Exclusions End
 android {
     ndkPath "**NDKPATH**"
 
@@ -35,6 +51,18 @@ android {
         noCompress = **BUILTIN_NOCOMPRESS** + unityStreamingAssets.tokenize(', ')
         ignoreAssetsPattern = "!.svn:!.git:!.ds_store:!*.scc:!CVS:!thumbs.db:!picasa.ini:!*~"
     }**PACKAGING_OPTIONS**
+}
+
+buildTypes {
+    release {
+        minifyEnabled true       // enables code optimization (shrinks and obfuscates code)
+        shrinkResources true     // removes unused resources (reduces APK size)
+        proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+    }
+    debug {
+        minifyEnabled false      // keep off for debug builds to simplify debugging
+        shrinkResources false
+    }
 }
 **IL_CPP_BUILD_SETUP**
 **SOURCE_BUILD_SETUP**
